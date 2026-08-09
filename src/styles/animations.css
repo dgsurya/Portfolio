@@ -1,0 +1,287 @@
+/* Master Animation Definitions for SURYA D G Portfolio */
+
+/* 1. Preloader Animation */
+@keyframes neural-loader {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* 2. Glass Navbar Reveal */
+@keyframes glass-nav-reveal {
+  from {
+    background: transparent;
+    backdrop-filter: blur(0px);
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+  }
+  to {
+    background: rgba(2, 8, 23, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 3. Hero Fade Up */
+@keyframes hero-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4. Gradient Text Flow */
+@keyframes gradient-text-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 5. Role Typewriter Pulse */
+@keyframes role-typewriter {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+}
+
+/* 6. Neural Float */
+@keyframes neural-float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* 7. Particle Drift */
+@keyframes particle-drift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100px) translateX(30px);
+    opacity: 0;
+  }
+}
+
+/* 8. Button Shine */
+@keyframes button-shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* 9. About Reveal Left & Right */
+@keyframes about-reveal-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes about-reveal-right {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 10. Counter Rise */
+@keyframes counter-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 11. Skill Stagger Rise & Card Lift */
+@keyframes skill-stagger-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skill-card-lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-card-lift:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 200, 255, 0.5) !important;
+  box-shadow: 0 10px 25px rgba(0, 200, 255, 0.25) !important;
+}
+
+/* 12. Timeline Grow & Entries */
+@keyframes timeline-grow {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+@keyframes timeline-left-enter {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes timeline-right-enter {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 13. Certificate Stagger & Tilt & Glow */
+@keyframes certificate-stagger {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.certificate-card-hover {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.certificate-card-hover:hover {
+  transform: translateY(-8px) scale(1.015);
+  border-color: rgba(0, 200, 255, 0.45) !important;
+  box-shadow: 0 16px 35px -8px rgba(0, 200, 255, 0.3) !important;
+}
+
+.certificate-card-hover img {
+  transition: transform 0.4s ease;
+}
+
+.certificate-card-hover:hover img {
+  transform: scale(1.04);
+}
+
+/* 14. Education Card Reveal */
+@keyframes education-card-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(35px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 15. Project Card Reveal & Lift */
+@keyframes project-card-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card-lift {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.project-card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 200, 255, 0.2);
+}
+
+/* 16. Scroll Progress Bar */
+@keyframes scroll-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Class Helper Hooks for Keyframes */
+.animate-hero-fade-up {
+  animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-gradient-text {
+  animation: gradient-text-flow 6s ease infinite;
+}
+
+.animate-neural-float {
+  animation: neural-float 6s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: role-typewriter 3s ease-in-out infinite;
+}
