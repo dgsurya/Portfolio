@@ -303,18 +303,133 @@
     particleField.appendChild(frag);
   }
 
-  /* ---------- 13. HERO PARALLAX (desktop only) ---------- */
-  var heroVisual = document.getElementById('heroVisual');
-  if (heroVisual && !isTouch && !reducedMotion) {
-    document.querySelector('.hero').addEventListener('mousemove', function (e) {
-      var rect = this.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / rect.width - 0.5;
-      var y = (e.clientY - rect.top) / rect.height - 0.5;
-      heroVisual.style.transform = 'translate(' + (x * 16) + 'px,' + (y * 16) + 'px)';
+  /* ---------- 13. MAGNETIC HOVER (desktop only) ---------- */
+  // Mouse-following magnetic effect: elements with [data-magnet] drift
+  // toward the cursor within a padding radius, then ease back on exit.
+  if (!isTouch && !reducedMotion) {
+    document.querySelectorAll('[data-magnet]').forEach(function (el) {
+      var strength = parseFloat(el.dataset.magnetStrength) || 4;
+      var padding = parseFloat(el.dataset.magnetPadding) || 100;
+      el.style.willChange = 'transform';
+
+      function onMove(e) {
+        var rect = el.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        var dx = e.clientX - cx;
+        var dy = e.clientY - cy;
+        var dist = Math.hypot(dx, dy);
+        var reach = Math.max(rect.width, rect.height) / 2 + padding;
+
+        if (dist < reach) {
+          el.style.transition = 'transform 0.3s ease-out';
+          el.style.transform = 'translate3d(' + (dx / strength) + 'px,' + (dy / strength) + 'px,0)';
+        } else {
+          resetMagnet();
+        }
+      }
+      function resetMagnet() {
+        el.style.transition = 'transform 0.6s ease-in-out';
+        el.style.transform = 'translate3d(0,0,0)';
+      }
+      window.addEventListener('mousemove', onMove, { passive: true });
+      el.addEventListener('mouseleave', resetMagnet);
     });
-    document.querySelector('.hero').addEventListener('mouseleave', function () {
-      heroVisual.style.transform = 'translate(0,0)';
+  }
+
+  /* ---------- 16. MARQUEE (dual-direction, scroll-linked) ---------- */
+  var marqueeSection = document.querySelector('.marquee-section');
+  var row1 = document.getElementById('marqueeRow1');
+  var row2 = document.getElementById('marqueeRow2');
+
+  if (marqueeSection && row1 && row2) {
+    var certImages = [
+      { src: 'images/ai-fundamentals.jpg', label: 'AI Fundamentals' },
+      { src: 'images/deep-learning-tensorflow.jpg', label: 'Deep Learning · TensorFlow' },
+      { src: 'images/data-science-internship-tech-vedhu.jpg', label: 'Data Science Internship' },
+      { src: 'images/ai-ml-internship-averixis.jpg', label: 'AI & ML Internship' },
+      { src: 'images/rdbms-ibm.jpg', label: 'RDBMS' },
+      { src: 'images/python-internship-codtech.jpg', label: 'Python Internship' }
+    ];
+    var skillWords = ['Python', 'Machine Learning', 'TensorFlow', 'Deep Learning', 'SQL', 'Data Science'];
+
+    function buildTiles(items, count) {
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < count; i++) {
+        var item = items[i % items.length];
+        var tile = document.createElement('div');
+        if (item.src) {
+          tile.className = 'marquee-tile';
+          var img = document.createElement('img');
+          img.src = item.src; img.alt = ''; img.loading = 'lazy';
+          var span = document.createElement('span');
+          span.textContent = item.label;
+          tile.appendChild(img); tile.appendChild(span);
+        } else {
+          tile.className = 'marquee-tile ' + (i % 3 === 0 ? 'accent-tile' : 'text-tile');
+          var span2 = document.createElement('span');
+          span2.textContent = item.label;
+          tile.appendChild(span2);
+        }
+        frag.appendChild(tile);
+      }
+      return frag;
+    }
+
+    row1.appendChild(buildTiles(certImages, certImages.length * 3));
+    row2.appendChild(buildTiles(skillWords.map(function (w) { return { label: w }; }), skillWords.length * 3));
+
+    if (!reducedMotion) {
+      var row1Width = 0, row2Width = 0;
+      function measure() {
+        row1Width = row1.scrollWidth / 3;
+        row2Width = row2.scrollWidth / 3;
+      }
+      measure();
+      window.addEventListener('resize', measure);
+
+      var mTicking = false;
+      function updateMarquee() {
+        var sectionTop = marqueeSection.getBoundingClientRect().top + window.scrollY;
+        var offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+        var o1 = ((offset % row1Width) + row1Width) % row1Width;
+        var o2 = ((offset % row2Width) + row2Width) % row2Width;
+        row1.style.transform = 'translateX(' + (-o1) + 'px)';
+        row2.style.transform = 'translateX(' + (o2 - row2Width) + 'px)';
+        mTicking = false;
+      }
+      window.addEventListener('scroll', function () {
+        if (!mTicking) { requestAnimationFrame(updateMarquee); mTicking = true; }
+      }, { passive: true });
+      updateMarquee();
+    }
+  }
+
+  /* ---------- 17. CHARACTER-REVEAL (About intro line) ---------- */
+  var charEl = document.getElementById('aboutCharReveal');
+  if (charEl && !reducedMotion) {
+    var text = charEl.textContent;
+    charEl.textContent = '';
+    var chars = [];
+    text.split('').forEach(function (ch) {
+      var s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = ch === ' ' ? '\u00A0' : ch;
+      charEl.appendChild(s);
+      chars.push(s);
     });
+
+    var charObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          chars.forEach(function (s, i) {
+            setTimeout(function () { s.style.opacity = '1'; }, i * 14);
+          });
+          charObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    charObserver.observe(charEl);
   }
 
 })();
